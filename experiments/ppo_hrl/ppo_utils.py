@@ -202,12 +202,6 @@ def parse_args():
         help='the number of models saved',
     )
     parser.add_argument(
-        '--max-eval-workers',
-        type=int,
-        default=4,
-        help='maximum number of eval workers (skips evaluation when set to 0)',
-    )
-    parser.add_argument(
         '--train-maps',
         nargs='+',
         default=["maps/16x16/basesWorkers16x16A.xml"],
