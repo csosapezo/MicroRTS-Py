@@ -290,6 +290,11 @@ class MicroRTSGridModeVecEnv:
         action_type_and_parameter_mask = action_mask[:, :, :, 1:].reshape(self.num_envs, self.height * self.width, -1)
         return action_type_and_parameter_mask
 
+    def get_source_unit_mask(self):
+        action_mask = np.array(self.vec_client.getMasks(0))
+        self.source_unit_mask = action_mask[:, :, :, 0].reshape(self.num_envs, -1)
+        return self.source_unit_mask
+
 
 class MicroRTSBotVecEnv(MicroRTSGridModeVecEnv):
     metadata = {"render.modes": ["human", "rgb_array"], "video.frames_per_second": 150}
