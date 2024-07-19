@@ -338,8 +338,6 @@ if __name__ == "__main__":
         for step in range(0, args.num_steps):
             # envs.render()
             global_step += 1 * args.num_envs
-            print(macro_epoch_data.obs[step].shape)
-            print(next_obs.shape)
             macro_epoch_data.obs[step] = next_obs
             macro_epoch_data.dones[step] = next_done
             macro_rs = 0
