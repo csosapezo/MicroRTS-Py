@@ -202,10 +202,15 @@ def parse_args():
         help='the number of models saved',
     )
     parser.add_argument(
-        '--max-eval-workers',
+        '--last-step',
         type=int,
-        default=4,
-        help='maximum number of eval workers (skips evaluation when set to 0)',
+        default=0,
+        help='last step (0 if no previous update)',
+    )
+    parser.add_argument(
+        '--last-exp-name',
+        type=str,
+        help='name of the last experiment',
     )
     parser.add_argument(
         '--train-maps',

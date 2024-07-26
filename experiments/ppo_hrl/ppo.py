@@ -258,6 +258,31 @@ if __name__ == "__main__":
     # CRASH AND RESUME LOGIC:
     starting_update = 1
 
+    if args.last_exp_name:
+        starting_update = int(args.last_step // args.batch_size) + 1
+        global_step = args.last_step
+
+        macro_agent.load_state_dict(torch.load(
+            f"models/{args.last_exp_name}/macro_agent.pt",
+            map_location=device,
+        ))
+        attack_agent.load_state_dict(torch.load(
+            f"models/{args.last_exp_name}/attack_agent.pt",
+            map_location=device,
+        ))
+        harvest_agent.load_state_dict(torch.load(
+            f"models/{args.last_exp_name}/harvest_agent.pt",
+            map_location=device,
+        ))
+        move_agent.load_state_dict(torch.load(
+            f"models/{args.last_exp_name}/move_agent.pt",
+            map_location=device,
+        ))
+        produce_agent.load_state_dict(torch.load(
+            f"models/{args.last_exp_name}/produce_agent.pt",
+            map_location=device,
+        ))
+
     print("Macro model's state_dict:")
     for param_tensor in macro_agent.state_dict():
         print(
@@ -337,10 +362,12 @@ if __name__ == "__main__":
 
         # TRY NOT TO MODIFY: prepare the execution of the game.
         for step in range(0, args.num_steps):
+
+            if (step % (args.num_steps // 10) == 0):
+                print(f"Step {step}/{args.num_steps}")
+
             # envs.render()
             global_step += 1 * args.num_envs
-            #print(macro_epoch_data.obs[step].shape)
-            #print(next_obs.shape)
             macro_epoch_data.obs[step] = next_obs
             macro_epoch_data.dones[step] = next_done
             macro_rs = 0
@@ -368,7 +395,7 @@ if __name__ == "__main__":
                     0,
                 ))
                 action_mask = torch.unsqueeze(action_mask, -1)
-                action_mask = action_mask.to('cuda')             
+                action_mask = action_mask.to('cuda')
                 micro_obs = torch.cat([next_obs, action_mask], -1)
 
                 data.obs[step] = micro_obs
