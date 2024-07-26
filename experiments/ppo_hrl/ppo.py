@@ -333,13 +333,14 @@ if __name__ == "__main__":
             attack_optimizer.param_groups[0]["lr"] = lrnow
             harvest_optimizer.param_groups[0]["lr"] = lrnow
             produce_optimizer.param_groups[0]["lr"] = lrnow
+        print(f"Epoch {update}/{args.num_updates}")
 
         # TRY NOT TO MODIFY: prepare the execution of the game.
         for step in range(0, args.num_steps):
             # envs.render()
             global_step += 1 * args.num_envs
-            print(macro_epoch_data.obs[step].shape)
-            print(next_obs.shape)
+            #print(macro_epoch_data.obs[step].shape)
+            #print(next_obs.shape)
             macro_epoch_data.obs[step] = next_obs
             macro_epoch_data.dones[step] = next_done
             macro_rs = 0
@@ -355,8 +356,8 @@ if __name__ == "__main__":
             macro_epoch_data.actions[step] = m_action
             macro_epoch_data.logprobs[step] = logproba
 
-            m_action = m_action * envs.get_source_unit_mask()
-            m_action = m_action.view(args.num_envs, h, w).cpu().numpy()
+            m_action = m_action.cpu() * envs.get_source_unit_mask()
+            m_action = m_action.view(args.num_envs, h, w).numpy()
 
             for num_agent, agent_zip in enumerate(zip(agents, epoch_datas)):
                 agent, data = agent_zip
@@ -367,7 +368,7 @@ if __name__ == "__main__":
                     0,
                 ))
                 action_mask = torch.unsqueeze(action_mask, -1)
-
+                action_mask = action_mask.to('cuda')             
                 micro_obs = torch.cat([next_obs, action_mask], -1)
 
                 data.obs[step] = micro_obs
@@ -463,8 +464,9 @@ if __name__ == "__main__":
                     device,
                 )
 
-            m_action = m_action * envs.get_source_unit_mask()
-            m_action = m_action.view(args.num_envs, h, w).cpu().numpy()
+            m_action = m_action.cpu() * envs.get_source_unit_mask()
+
+            m_action = m_action.view(args.num_envs, h, w).numpy()
 
             for num_agent, agent_zip in enumerate(zip(agents, epoch_datas)):
                 agent, data = agent_zip
@@ -475,7 +477,9 @@ if __name__ == "__main__":
                     0,
                 ))
                 action_mask = torch.unsqueeze(action_mask, -1)
+                action_mask = action_mask.to('cuda')
                 micro_obs = torch.cat([next_obs, action_mask], -1)
+                micro_obs = micro_obs.to('cuda')
                 last_micro_value = agent.get_value(micro_obs).reshape(1, -1)
 
                 if num_agent < len(agents) - 1:
