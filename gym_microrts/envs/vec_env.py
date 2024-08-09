@@ -110,6 +110,7 @@ class MicroRTSGridModeVecEnv:
                 "lib/bots/MixedBot.jar",
                 "lib/bots/TiamatBot.jar",
                 "lib/bots/UMSBot.jar",
+                "lib/bots/Aggrobot.jar",
                 "lib/bots/mayariBot.jar",  # "MindSeal.jar"
             ]
             for jar in jars:
@@ -354,6 +355,7 @@ class MicroRTSBotVecEnv(MicroRTSGridModeVecEnv):
                 "lib/bots/MixedBot.jar",
                 "lib/bots/TiamatBot.jar",
                 "lib/bots/UMSBot.jar",
+                "lib/bots/Aggrobot.jar",
                 "lib/bots/mayariBot.jar",  # "MindSeal.jar"
             ]
             for jar in jars:

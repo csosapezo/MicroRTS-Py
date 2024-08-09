@@ -121,6 +121,12 @@ def guidedRojoA3N(utt):
     return GuidedRojoA3N(utt)
 
 
+# https://github.com/Jannis42/MicroRTSObiBotKenobi
+def aggrobot(utt):
+    from abid import Aggrobot
+
+    return Aggrobot(utt)
+
 ALL_AIS = [
     randomBiasedAI,
     randomAI,
@@ -129,4 +135,5 @@ ALL_AIS = [
     lightRushAI,
     coacAI,
     naiveMCTSAI,
+    aggrobot,
 ]
