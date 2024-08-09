@@ -121,7 +121,7 @@ def guidedRojoA3N(utt):
     return GuidedRojoA3N(utt)
 
 
-# https://github.com/Jannis42/MicroRTSObiBotKenobi
+# https://github.com/khisr0w/Aggrobot
 def aggrobot(utt):
     from abid import Aggrobot
 
